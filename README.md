@@ -1,6 +1,6 @@
 # ToolShop Playwright Tests
 
-End-to-end Playwright test suite for the Practice Software Testing Toolshop application.
+End-to-end Playwright test suite for the Practice Software Testing Toolshop application https://practicesoftwaretesting.com/
 
 ## Stack
 
