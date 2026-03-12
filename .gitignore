@@ -17,3 +17,8 @@ node_modules/
 .DS_Store
 Thumbs.db
 .vscode/
+
+# Local-only test specs
+tests/apiandui.spec.ts
+tests/login.spec.ts
+tests/RegisterUser.spec.ts
