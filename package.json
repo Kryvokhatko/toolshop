@@ -1,0 +1,35 @@
+{
+  "name": "toolshop",
+  "version": "1.0.0",
+  "description": "Playwright end-to-end test suite for the Practice Software Testing Toolshop application.",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:setup": "playwright test --project=setup",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:chromium": "playwright test --project=chromium",
+    "test:message": "playwright test tests/message.spec.ts",
+    "test:login": "playwright test tests/login.spec.ts",
+    "test:api-ui": "playwright test tests/apiandui.spec.ts",
+    "test:register": "playwright test tests/RegisterUser.spec.ts --headed",
+    "report": "playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "e2e",
+    "testing",
+    "toolshop"
+  ],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.3.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.3.1"
+  }
+}
