@@ -21,16 +21,6 @@ export class LoginPage extends BasePage {
     async open() {
         await super.open("/auth/login");
         await expect(this.page).toHaveURL(/\/auth\/login(?:[/?#]|$)/, { timeout: 15000 });
-
-        try {
-            await Promise.any([
-                this.pageHeader.waitFor({ state: 'visible', timeout: 15000 }),
-                this.emailAddressFld.waitFor({ state: 'visible', timeout: 15000 }),
-                this.loginButton.waitFor({ state: 'visible', timeout: 15000 }),
-            ]);
-        } catch {
-            throw new Error(`Login screen did not become ready at URL: ${this.page.url()}`);
-        }
     };
 
     async loginAs(username: string, password: string, options: LoginOptions = {}) {

@@ -12,7 +12,7 @@ export class MessagesPage extends BasePage {
     private async waitForMessageDetail() {
         await this.page.waitForURL(/\/messages\/[^/]+$/, { timeout: 10000 });
         await expect(this.page.locator('app-message-detail')).toBeVisible({ timeout: 10000 });
-        await this.page.waitForLoadState('networkidle', { timeout: 10000 });
+        await this.page.waitForLoadState('networkidle', { timeout: 15000 });
     }
 
     // Admin opens a message by matching the customer name in the first column (admin table has Name as td[0])

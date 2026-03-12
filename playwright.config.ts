@@ -3,8 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config({path: '.env'});
 
-const configuredBaseURL = process.env.UI_URL?.trim();
-const baseURL = configuredBaseURL || 'https://practicesoftwaretesting.com';
+const baseURL = process.env.UI_URL?.trim();
 
 export default defineConfig({
   testDir: './tests',
