@@ -9,7 +9,7 @@ type LoginOptions = {
 export class LoginPage extends BasePage {
     readonly pageHeader: Locator = this.page.getByRole('heading', { name: 'Login' });
     readonly registerYourAccountLnk: Locator = this.page.locator('[data-test="register-link"]');
-    readonly emailAddressFld: Locator = this.page.getByPlaceholder("Your email");
+    readonly emailAddressFld: Locator = this.page.locator("#email");
     readonly passwordFld: Locator = this.page.getByPlaceholder("Your password");
     readonly loginButton: Locator = this.page.locator('[data-test="login-submit"]');
 
