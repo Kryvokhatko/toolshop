@@ -7,13 +7,16 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   checks:
     name: Basic checks (GitHub runner)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: lts/*
       - name: Install dependencies
@@ -37,8 +40,8 @@ jobs:
       CUSTOMER_FIRST_NAME: ${{ secrets.CUSTOMER_FIRST_NAME }}
       CUSTOMER_LAST_NAME: ${{ secrets.CUSTOMER_LAST_NAME }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: lts/*
       - name: Install dependencies
