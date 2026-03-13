@@ -22,3 +22,6 @@ Thumbs.db
 tests/apiandui.spec.ts
 tests/login.spec.ts
 tests/RegisterUser.spec.ts
+
+# Local self-hosted runner files
+actions-runner/
