@@ -24,5 +24,5 @@ export class PageObjectManager {
     this.messagesPage = new MessagesPage(page);
     this.accountPage = new AccountPage(page);
     this.messageDetails = new MessageDetails(page);
-  }
-}
+  };
+};

@@ -2,6 +2,7 @@ import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from './basePage';
 import { PageObjectManager } from './pageObjectManager';
 
+//For Setup option
 type LoginOptions = {
     allowAutoRegister?: boolean;
 }
@@ -30,8 +31,10 @@ export class LoginPage extends BasePage {
 
         const attemptLogin = async () => {
             const result = await Promise.race([
-                this.page.waitForURL((url) => !/\/auth\/login(?:[/?#]|$)/.test(url.pathname), { timeout: 10000 })
-                .then(() => 'success' as const), invalidMessage
+                this.page.waitForURL((url) => !/\/auth\/login(?:[/?#]|$)/
+                .test(url.pathname), { timeout: 10000 })
+                .then(() => 'success' as const), 
+                invalidMessage
                 .waitFor({ state: 'visible', timeout: 10000 })
                 .then(() => 'invalid' as const),
             ]);
@@ -67,7 +70,7 @@ export class LoginPage extends BasePage {
         await this.emailAddressFld.clear();        
         await this.emailAddressFld.fill(username);
         await this.passwordFld.fill(password);
-        await this.loginButton.click();
+        await super.submit(this.loginButton);
     };
 
 };

@@ -40,11 +40,11 @@ export class MessagesPage extends BasePage {
         await this.waitForMessageDetail();
     };
 
-    // Open exact thread by id (works for both admin and customer lists)
+    // Open exact thread by id (works for both admin and customer messages lists)
     async opensMessageById(messageId: string) {
         const detailsLink = this.page.locator(`a[href$="/messages/${messageId}"]`, { hasText: "Details" }).first();
         await expect(detailsLink).toBeVisible({ timeout: 10000 });
-        await detailsLink.click();
+        await super.submit(detailsLink);
         await this.waitForMessageDetail();
     }
 

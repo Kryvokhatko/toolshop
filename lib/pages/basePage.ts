@@ -16,18 +16,4 @@ export class BasePage {
         await button.click();
     };
 
-
-
-
-    
-    //No reference
-    async assertPath(path: string) {
-        await expect(this.page).toHaveURL(new RegExp(`${path}$`));
-    };
-    
-    //No reference
-    async waitForPage(uniqueElement: Locator) {
-        await expect(uniqueElement).toBeVisible();
-    };
-    
 }

@@ -34,7 +34,7 @@ export class ContactPage extends BasePage {
 
         const pathToFile = path.resolve(process.cwd(), 'tests', 'testData', attachedFileName);  //safely joins into one normalized full path
         const fileChooserPromise = this.page.waitForEvent('filechooser');
-        await this.attachmentButton.click();
+        await super.submit(this.attachmentButton);
         const fileChooser = await fileChooserPromise;
         await fileChooser.setFiles(pathToFile);
 

@@ -48,11 +48,8 @@ export class MessageDetails extends BasePage {
 
     async createReply(reply: string) {
         await expect(this.replyMessageTextArea).toBeEnabled({ timeout: 10000 });
-        await this.replyMessageTextArea.click();
-        await this.replyMessageTextArea.clear();
-        await this.replyMessageTextArea.pressSequentially(reply);
+        await this.replyMessageTextArea.fill(reply);
         await expect(this.replyMessageTextArea).toHaveValue(reply);
-        await this.replyMessageTextArea.press('Tab');
     };
 
     // Reuse BasePage.submit() instead of duplicating click() logic
@@ -61,7 +58,6 @@ export class MessageDetails extends BasePage {
         if (expectedMessageId) {
             await this.assertMessageId(expectedMessageId);
         }
-        //await this.replyButton.click();
         await super.submit(this.replyButton);
         const savedReply = this.repliesHistoryCards.filter({ hasText: replyText }).last();
         await expect(savedReply).toBeVisible({ timeout: 10000 });
@@ -73,14 +69,5 @@ export class MessageDetails extends BasePage {
         }
         await expect(savedReply).toBeVisible({ timeout: 10000 });
     };
-
-    //To be done next
-    //async firstRepliesHistoryVerification() {
-    //    const replyCardHeader = await this.repliesHistory.locator(".card-header").first().allTextContents(); // ['John Doe | 2026-03-10 14:01:52']
-    //    const cardHeaderText = replyCardHeader[0] ?? "";
-    //    const authorName = cardHeaderText.split("|")[0].trim(); //["John Doe ", " 2026-03-10 14:01:52"]
-    //    await expect(authorName).toContain("John Doe");
-    //};
-
 
 };
