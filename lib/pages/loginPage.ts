@@ -64,6 +64,7 @@ export class LoginPage extends BasePage {
     };
 
     async completeLoginForm(username: string, password: string) {
+        await this.emailAddressFld.clear();        
         await this.emailAddressFld.fill(username);
         await this.passwordFld.fill(password);
         await this.loginButton.click();
