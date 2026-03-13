@@ -1,4 +1,4 @@
-name: CI
+name: Playwright Tests
 
 on:
   push:
@@ -11,9 +11,20 @@ permissions:
   contents: read
 
 jobs:
-  checks:
-    name: Basic checks (GitHub runner)
+  test:
+    name: Playwright E2E (Public Repo)
     runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      UI_URL: ${{ secrets.UI_URL }}
+      ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
+      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      CUSTOMER_USERNAME: ${{ secrets.CUSTOMER_USERNAME }}
+      CUSTOMER_PASSWORD: ${{ secrets.CUSTOMER_PASSWORD }}
+      GUEST_USERNAME: ${{ secrets.GUEST_USERNAME }}
+      GUEST_PASSWORD: ${{ secrets.GUEST_PASSWORD }}
+      CUSTOMER_FIRST_NAME: ${{ secrets.CUSTOMER_FIRST_NAME }}
+      CUSTOMER_LAST_NAME: ${{ secrets.CUSTOMER_LAST_NAME }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -21,28 +32,13 @@ jobs:
           node-version: lts/*
       - name: Install dependencies
         run: npm ci
-      - name: Type check / smoke
-        run: npx playwright --version
-
-  dispatch-e2e:
-    name: Trigger E2E in private repo
-    # Only dispatch on push to main or manual trigger — never on fork PRs
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-    needs: checks
-    runs-on: ubuntu-latest
-    steps:
-      - name: Dispatch E2E run to private repo
-        uses: actions/github-script@v7
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Run Playwright tests
+        run: npx playwright test
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
-          github-token: ${{ secrets.PRIVATE_E2E_DISPATCH_TOKEN }}
-          script: |
-            await github.rest.repos.createDispatchEvent({
-              owner: 'Kryvokhatko',
-              repo: 'toolshop-e2e-private',
-              event_type: 'run-e2e',
-              client_payload: {
-                sha: context.sha,
-                ref: context.ref,
-                source_repo: context.repo.repo,
-              },
-            });
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
