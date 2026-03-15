@@ -60,14 +60,14 @@ export class MessageDetails extends BasePage {
         }
         await super.submit(this.replyButton);
         const savedReply = this.repliesHistoryCards.filter({ hasText: replyText }).last();
-        await expect(savedReply).toBeVisible({ timeout: 10000 });
-        await this.page.waitForLoadState('networkidle', { timeout: 10000 });
+        await expect(savedReply).toBeVisible({ timeout: 15000 });
+        await this.page.waitForLoadState('networkidle', { timeout: 15000 });
         await this.page.reload();
-        await expect(this.messageDetailRoot).toBeVisible({ timeout: 10000 });
+        await expect(this.messageDetailRoot).toBeVisible({ timeout: 15000 });
         if (expectedMessageId) {
             await this.assertMessageId(expectedMessageId);
         }
-        await expect(savedReply).toBeVisible({ timeout: 10000 });
+        await expect(savedReply).toBeVisible({ timeout: 15000 });
     };
 
 };

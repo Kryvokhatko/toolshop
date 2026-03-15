@@ -1,7 +1,7 @@
 import { test, expect } from "../lib/fixtures/ui.fixtures";
 import { messageData } from "./testData/messageData";
 
-test("E2E Support flow for warranty", async ({ customerPageObjects, customerPage, adminPageObjects }) => {
+test("Support flow for warranty @E2E", async ({ customerPageObjects, customerPage, adminPageObjects }) => {
     const runId = Date.now();
     const customerFirstName = process.env.CUSTOMER_FIRST_NAME ?? 'Customer';
     const customerLastName = process.env.CUSTOMER_LAST_NAME ?? 'UniqueUser';

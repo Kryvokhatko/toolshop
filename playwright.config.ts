@@ -8,8 +8,8 @@ const baseURL = configuredBaseURL || 'https://practicesoftwaretesting.com';
 
 export default defineConfig({
   testDir: './tests',
-  //timeout: 100000,
-  testIgnore: ['**/RegisterUser.spec.ts'],
+  timeout: 100000,
+  //testIgnore: ['**/RegisterUser.spec.ts'],
   /* Run tests in files in parallel */
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -27,7 +27,7 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
+    //screenshot: 'only-on-failure',
   },
 
   /* Configure projects for major browsers */

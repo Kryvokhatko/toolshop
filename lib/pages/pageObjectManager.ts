@@ -6,6 +6,7 @@ import { RegisterPage } from './registerPage';
 import { MessagesPage } from './messagesPage';
 import { AccountPage } from './accountPage';
 import { MessageDetails } from './messageDetails';
+import { CategoryHandToolsPage } from './categoryHandToolsPage';
 
 export class PageObjectManager {
   readonly homePage: HomePage;
@@ -15,6 +16,7 @@ export class PageObjectManager {
   readonly messagesPage: MessagesPage;
   readonly accountPage: AccountPage;
   readonly messageDetails: MessageDetails;
+  readonly categoryHandToolsPage: CategoryHandToolsPage;  
 
   constructor(page: Page) {
     this.homePage = new HomePage(page);
@@ -24,5 +26,6 @@ export class PageObjectManager {
     this.messagesPage = new MessagesPage(page);
     this.accountPage = new AccountPage(page);
     this.messageDetails = new MessageDetails(page);
+    this.categoryHandToolsPage = new CategoryHandToolsPage(page);
   };
 };
