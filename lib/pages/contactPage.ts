@@ -20,8 +20,13 @@ export class ContactPage extends BasePage {
     // Reuse BasePage.open() instead of duplicating page.goto() logic
     async open() {
         await super.open('/contact');
-        await expect(this.contactFormHeader).toBeVisible();
+        await this.assertLoaded();
     };
+
+    async assertLoaded() {
+        await expect(this.page).toHaveURL(/\/contact(?:[/?#]|$)/);
+        await expect(this.contactFormHeader).toBeVisible();
+    };    
 
     async completeContactFormLoggedIn(subjectSelector: string, messageText: string, attachedFileName: string) {
         const customerFullName = `${process.env.CUSTOMER_FIRST_NAME ?? 'Customer'} ${process.env.CUSTOMER_LAST_NAME ?? 'UniqueUser'}`;

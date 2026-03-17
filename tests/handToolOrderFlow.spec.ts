@@ -2,16 +2,14 @@ import { test, expect } from '../lib/fixtures/ui.fixtures';
 
 test('Make an order of Hand Tool as a Customer and complete flow as an Admin', async ({ customerPage, adminPage, customerPageObjects, adminPageObjects }) => {
     // Customer starts from authenticated account page.
-    await customerPage.goto('/account');
-    await expect(customerPage).toHaveURL(/\/account(?:[/?#]|$)/);
+    await customerPageObjects.accountPage.open();
     await customerPageObjects.accountPage.selectCategory();
-    await expect(customerPage).toHaveURL(/\/category\/hand-tools(?:[/?#]|$)/);
-    await expect(customerPage.getByRole('heading', { name: 'Category: Hand Tools' })).toBeVisible();
+    await customerPageObjects.categoryHandToolsPage.assertCategoryHandToolPageLoaded();
 
     await customerPageObjects.categoryHandToolsPage.openPage3();
     await customerPageObjects.categoryHandToolsPage.openTapeMeasure5m();
 
-    await customerPageObjects.productPage.assertOpened();
+    await customerPageObjects.productPage.assertProductOpened();
     await customerPageObjects.productPage.addToCart();
 
     await customerPageObjects.checkoutPage.openFromCart();
@@ -23,7 +21,6 @@ test('Make an order of Hand Tool as a Customer and complete flow as an Admin', a
         cvv: '123',
         cardHolder: 'Customer UniqueUser',
     });
-
     const invoiceNumber = await customerPageObjects.checkoutPage.completePaymentAndCaptureInvoice();
 
     // Admin validates and completes the same order by captured invoice number.

@@ -9,7 +9,7 @@ export class ProductPage extends BasePage {
         super(page);
     };
 
-    async assertOpened() {
+    async assertProductOpened() {
         await expect(this.page).toHaveURL(/\/product\/[A-Za-z0-9]+(?:[/?#]|$)/);
         await expect(this.productTitle).toBeVisible();
     };

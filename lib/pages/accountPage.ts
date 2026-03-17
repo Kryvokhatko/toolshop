@@ -10,6 +10,16 @@ export class AccountPage extends BasePage {
         super(page);
     };
 
+    async open() {
+        await super.open('/account');
+        await this.assertPageLoaded();
+    };
+    
+    async assertPageLoaded() {
+        await expect(this.page).toHaveURL(/\/account(?:[/?#]|$)/);
+        await expect(this.categoriesSelector).toBeVisible();
+    };
+
     async selectCategory() {
         await this.categoriesSelector.click();
         await this.handToolsItem.click();
