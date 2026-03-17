@@ -10,7 +10,7 @@ export class MessagesPage extends BasePage {
     };
 
     private async waitForMessageDetail() {
-        await this.page.waitForURL(/\/messages\/[^/]+$/, { timeout: 10000 });
+        await this.page.waitForURL(/\/messages\/[^/]+$/, { timeout: 10000 });//there must be an id-like area with one or more characters, none of which can be "/"
         await expect(this.page.locator('app-message-detail')).toBeVisible({ timeout: 10000 });
         await this.page.waitForLoadState('networkidle', { timeout: 15000 });
     }

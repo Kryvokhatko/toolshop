@@ -58,7 +58,8 @@ export class CheckoutPage extends BasePage {
         await expect(this.orderConfirmation).toContainText('Thanks for your order! Your invoice number is');
 
         const confirmationText = (await this.orderConfirmation.innerText()).trim();
-        const invoiceMatch = confirmationText.match(/INV-\d+/);
+        const invoiceMatch = confirmationText.match(/INV-\d+/);//one or more digits
+        // For debugging
         expect(invoiceMatch, `Invoice number not found in confirmation text: ${confirmationText}`).not.toBeNull();
         return invoiceMatch![0];
     };

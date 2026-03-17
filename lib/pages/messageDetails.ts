@@ -14,10 +14,10 @@ export class MessageDetails extends BasePage {
         super(page);
     };
 
-    // Parse id from current ".../messages/{id}" url
+    // Parse id from current url "https://practicesoftwaretesting.com/account/messages/01kkxhnxze908gtfgd69bw1596/"
     getCurrentMessageIdFromUrl(): string {
         const pathname = new URL(this.page.url()).pathname;
-        const id = pathname.split("/").filter(Boolean).pop();
+        const id = pathname.split("/").filter(x => Boolean(x)).pop(); //["", "account", "messages", "01kkxhnxze908gtfgd69bw1596", ""]
         if (!id || id === "messages") {
             throw new Error(`Cannot parse message id from URL: ${this.page.url()}`);
         }
@@ -26,7 +26,7 @@ export class MessageDetails extends BasePage {
 
     // Escape any regex chars just in case
     private escapeRegex(value: string): string {
-        return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); //escapes special regex metacharacters so they're treated as literal text
     };
 
     // Ensure we are still on the same thread
@@ -52,13 +52,12 @@ export class MessageDetails extends BasePage {
         await expect(this.replyMessageTextArea).toHaveValue(reply);
     };
 
-    // Reuse BasePage.submit() instead of duplicating click() logic
 
     async sendReply(replyText: string, expectedMessageId?: string) {
         if (expectedMessageId) {
             await this.assertMessageId(expectedMessageId);
         }
-        await super.submit(this.replyButton);
+        await super.submit(this.replyButton); // Reuse BasePage.submit() instead of duplicating click() logic
         const savedReply = this.repliesHistoryCards.filter({ hasText: replyText }).last();
         await expect(savedReply).toBeVisible({ timeout: 15000 });
         await this.page.waitForLoadState('networkidle', { timeout: 15000 });

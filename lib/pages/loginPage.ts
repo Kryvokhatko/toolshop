@@ -21,7 +21,7 @@ export class LoginPage extends BasePage {
     // Reuse BasePage.open() instead of duplicating page.goto() logic
     async open() {
         await super.open("/auth/login");
-        await expect(this.page).toHaveURL(/\/auth\/login(?:[/?#]|$)/, { timeout: 15000 });
+        await expect(this.page).toHaveURL("/auth/login", { timeout: 15000 });
     };
 
     async loginAs(username: string, password: string, options: LoginOptions = {}) {
