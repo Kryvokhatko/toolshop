@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-let authToken: any; 
+let authToken: string;
+
 test.beforeAll(async ({ request }) => {
     const loginData = {
         email: process.env.ADMIN_USERNAME,
