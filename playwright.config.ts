@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 
 dotenv.config({path: '.env'});
 
-const configuredBaseURL = process.env.UI_URL?.trim();
-const baseURL = configuredBaseURL || 'https://practicesoftwaretesting.com';
+const uiBaseURL = process.env.UI_URL?.trim() || "https://practicesoftwaretesting.com";
+const apiBaseURL = process.env.API_URL?.trim() || "https://api.practicesoftwaretesting.com";
 
 export default defineConfig({
   testDir: './tests',
@@ -23,7 +23,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
-    baseURL,
+    baseURL: uiBaseURL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -38,9 +38,14 @@ export default defineConfig({
     },
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { ...devices['Desktop Chrome'], baseURL: uiBaseURL },
       dependencies: ['setup'],
     },
+    {
+      name: "api",
+      testMatch: /tests\/API_tests\/.*\.spec\.(ts|js)/,
+      use: { baseURL: apiBaseURL }
+    }
 
     //{
     //  name: 'chromium',

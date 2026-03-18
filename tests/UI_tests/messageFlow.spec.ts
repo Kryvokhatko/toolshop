@@ -1,5 +1,5 @@
-import { test, expect } from "../lib/fixtures/ui.fixtures";
-import { messageData } from "./testData/messageData";
+import { test, expect } from "../../lib/fixtures/ui.fixtures";
+import { messageData } from "../testData/messageData";
 
 test("Support flow for warranty @E2E", async ({ customerPageObjects, customerPage, adminPageObjects }) => {
     const runId = Date.now();
