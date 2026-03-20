@@ -84,8 +84,8 @@ export const test = base.extend<userContextFixtures>({
 
     //Browser context for admin
     adminContext: async ({ browser }, use) => {
-        const statePath = getAuthStatePath('admin.json');ensureAuthStateExists(statePath);
-        
+        const statePath = getAuthStatePath('admin.json');
+        ensureAuthStateExists(statePath);
         const context = await browser.newContext({ storageState: statePath });
         await use(context);
         await context.close();

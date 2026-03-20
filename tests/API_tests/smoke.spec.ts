@@ -18,7 +18,7 @@ test("Login as Admin", async ({ api }) => {
 
 //check for test with query parameters
 
-
+// An old approach to show the difference
 test("Login as Admin OLD", async ({request}) => {
     const loginData = {
         email: process.env.ADMIN_USERNAME,
