@@ -15,5 +15,4 @@ export class BasePage {
         await expect(button).toBeEnabled({ timeout: 5000});
         await button.click();
     };
-
 }

@@ -38,4 +38,13 @@ export class AdminOrdersPage extends BasePage {
         await expect(row).toBeVisible();
         await expect(row).toContainText(status);
     };
+
+    async assertNoOrdersVisible() {
+        // Page is loaded
+        await expect(this.page).toHaveURL(/\/admin\/orders(?:[/?#]|$)/);
+        await expect(this.page.locator('[data-test="page-title"]')).toContainText('Order');
+        // No order rows rendered
+        await expect(this.page.getByRole('link', { name: 'Edit' })).toHaveCount(0);
+    };
+
 };
