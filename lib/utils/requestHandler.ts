@@ -1,8 +1,8 @@
-import { APIRequestContext } from "@playwright/test";
+import { APIRequestContext, APIResponse } from "@playwright/test";
 import { expect } from '@playwright/test';
 import { APILogger } from "./logger";
 
-
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
 export class RequestHandler {
     private request: APIRequestContext;
@@ -46,6 +46,7 @@ export class RequestHandler {
         return this;
     };
 
+    /*
     async postRequest(statusCode: number) {
         const url = this.createUrl();
         this.logger.logRequest('POST', url, this.apiHeaders, this.apiBody);
@@ -91,6 +92,52 @@ export class RequestHandler {
         expect(actualStatus).toEqual(statusCode);
         return responseJSON;
     };
+*/
+    // Public methods are now wrappers around the template method
+    async getRequest(statusCode: number) {
+        return this.executeRequest("GET", statusCode, false, this.getRequest);
+    };
+
+    async postRequest(statusCode: number) {
+        return this.executeRequest("POST", statusCode, true, this.postRequest);
+    };
+
+    async putRequest(statusCode: number) {
+        return this.executeRequest("PUT", statusCode, true, this.putRequest);
+    };
+
+    async deleteRequest(statusCode: number) {
+        return this.executeRequest("DELETE", statusCode, false, this.deleteRequest);
+    };
+
+    async patchRequest(statusCode: number) {
+        return this.executeRequest("PATCH", statusCode, true, this.patchRequest);
+    };
+
+    // Template Method: fixed algorithm skeleton
+    private async executeRequest(method: HttpMethod, expectedStatusCode: number, includeBody: boolean, calledMethod: Function ) {
+        const url = this.createUrl();
+        this.logger.logRequest('PUT', url, this.apiHeaders, this.apiBody);
+        const response = await this.dispatch(method, url, includeBody);
+        this.cleanupFields();
+        const actualStatus = response.status();
+        const responseJSON = await response.json();
+        this.logger.logResponse(actualStatus, responseJSON);
+        this.statusCodeValidator(actualStatus, expectedStatusCode, calledMethod);
+        expect(actualStatus).toEqual(expectedStatusCode);
+        return responseJSON;
+    };
+
+    private async dispatch(method: HttpMethod, url: string, includeBody: boolean): Promise<APIResponse> {
+        const options = includeBody ? { headers: this.apiHeaders, data: this.apiBody } : { headers: this.apiHeaders};
+        switch (method) {
+            case "GET": return this.request.get(url, {headers: this.apiHeaders});
+            case "POST": return this.request.post(url, {data: this.apiBody});
+            case "PUT": return this.request.put(url, options);
+            case "DELETE": return this.request.delete(url, options);
+            case "PATCH": return this.request.patch(url, options);
+        };
+    };
 
     private createUrl() {
         const url = new URL(`${this.apiUrl ?? this.defaultApiUrl}${this.apiPath}`);
@@ -113,10 +160,7 @@ export class RequestHandler {
     private cleanupFields() {
         this.apiBody = {};
         this.apiHeaders = {};
-        //this.defaultApiUrl = undefined;
         this.apiPath = '';
         this.queryParams = {};
     };
-    
-
 };
