@@ -1,4 +1,5 @@
-import { test, expect } from '../../lib/fixtures/ui.fixtures';
+import { test } from '../../lib/fixtures/ui.fixtures';
+import { expect } from '@playwright/test';
 
 test('Make an order of Hand Tool as a Customer and complete flow as an Admin', async ({ customerPageObjects, adminPageObjects }) => {
     // Customer starts from authenticated account page.

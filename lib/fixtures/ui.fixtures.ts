@@ -107,5 +107,3 @@ export const test = base.extend<userContextFixtures>({
         await use(new PageObjectManager(adminPage));
     },
 });
-
-export { expect };

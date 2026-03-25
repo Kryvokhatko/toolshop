@@ -2,6 +2,8 @@ import { APIRequestContext } from "@playwright/test";
 import { expect } from '@playwright/test';
 import { APILogger } from "./logger";
 
+
+
 export class RequestHandler {
     private request: APIRequestContext;
     private logger: APILogger;
@@ -88,7 +90,7 @@ export class RequestHandler {
         this.statusCodeValidator(actualStatus, statusCode, this.putRequest);
         expect(actualStatus).toEqual(statusCode);
         return responseJSON;
-    };    
+    };
 
     private createUrl() {
         const url = new URL(`${this.apiUrl ?? this.defaultApiUrl}${this.apiPath}`);
