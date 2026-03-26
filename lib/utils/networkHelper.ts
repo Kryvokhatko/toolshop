@@ -19,7 +19,7 @@ export class NetworkHelper extends BasePage {
 
     async mockJson(url: Parameters<Page['route']>[0], payload: unknown, status = 200) {
         await this.route(url, async (route) => {
-            await route.fulfill({
+            await route.fulfill({ 
                 status,
                 contentType: 'application/json',
                 body: JSON.stringify(payload),
