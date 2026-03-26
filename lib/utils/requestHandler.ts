@@ -46,7 +46,8 @@ export class RequestHandler {
         return this;
     };
 
-    /*
+/* to show the difference for the Design Pattern "Template Method" structure
+
     async postRequest(statusCode: number) {
         const url = this.createUrl();
         this.logger.logRequest('POST', url, this.apiHeaders, this.apiBody);
@@ -118,7 +119,7 @@ export class RequestHandler {
     private async executeRequest(method: HttpMethod, expectedStatusCode: number, includeBody: boolean, calledMethod: Function ) {
         const url = this.createUrl();
         this.logger.logRequest('PUT', url, this.apiHeaders, this.apiBody);
-        const response = await this.dispatch(method, url, includeBody);
+        const response = await this.sendRequest(method, url, includeBody);
         this.cleanupFields();
         const actualStatus = response.status();
         const responseJSON = await response.json();
@@ -128,14 +129,19 @@ export class RequestHandler {
         return responseJSON;
     };
 
-    private async dispatch(method: HttpMethod, url: string, includeBody: boolean): Promise<APIResponse> {
+    private async sendRequest(method: HttpMethod, url: string, includeBody: boolean): Promise<APIResponse> {
         const options = includeBody ? { headers: this.apiHeaders, data: this.apiBody } : { headers: this.apiHeaders};
         switch (method) {
-            case "GET": return this.request.get(url, {headers: this.apiHeaders});
-            case "POST": return this.request.post(url, {data: this.apiBody});
-            case "PUT": return this.request.put(url, options);
-            case "DELETE": return this.request.delete(url, options);
-            case "PATCH": return this.request.patch(url, options);
+            case "GET": 
+                return this.request.get(url, {headers: this.apiHeaders});
+            case "POST": 
+                return this.request.post(url, {data: this.apiBody});
+            case "PUT": 
+                return this.request.put(url, options);
+            case "DELETE": 
+                return this.request.delete(url, options);
+            case "PATCH": 
+                return this.request.patch(url, options);
         };
     };
 
