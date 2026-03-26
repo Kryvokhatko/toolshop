@@ -4,6 +4,7 @@ import { BasePage } from './basePage';
 export class AdminOrdersPage extends BasePage {
     readonly orderStatusSelect: Locator = this.page.locator('[data-test="order-status"]');
     readonly updateStatusButton: Locator = this.page.locator('[data-test="update-status-submit"]');
+    readonly editButton: Locator = this.page.locator(".btn.btn-sm.btn-primary.mx-2");
 
     constructor(page: Page) {
         super(page);
@@ -44,7 +45,7 @@ export class AdminOrdersPage extends BasePage {
         await expect(this.page).toHaveURL(/\/admin\/orders(?:[/?#]|$)/);
         await expect(this.page.locator('[data-test="page-title"]')).toContainText('Order');
         // No order rows rendered
-        await expect(this.page.getByRole('link', { name: 'Edit' })).toHaveCount(0);
+        await expect(this.editButton).toHaveCount(0);        
     };
 
 };
