@@ -17,12 +17,32 @@ export class NetworkHelper extends BasePage {
         await this.page.unroute(url, fn);
     };
 
-    async mockJson(url: Parameters<Page['route']>[0], payload: unknown, status = 200) {
+    async mockOrdersResponse(url: Parameters<Page['route']>[0], payload: unknown, status = 200) {
         await this.route(url, async (route) => {
             await route.fulfill({ 
                 status,
                 contentType: 'application/json',
                 body: JSON.stringify(payload),
+            });
+        });
+    };
+
+    //Not used it tests, to be done later
+    //overrides: {} - optional configuration object parameter
+    async mockOrdersRequest(url: Parameters<Page['route']>[0], overrides: {
+        method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+        headers?: Record<string, string>;
+        postData?: string; // request body to send
+        nextUrl?: string //if you want to change destination
+    } = {}) {
+        await this.route(url, async (route) => {
+            const request = route.request();// original intercepted request object
+            
+            await route.continue({ //forward to server modified
+                method: overrides.method ?? request.method(), //use override method if provided, otherwise keep original method
+                headers: {...request.headers(), ...(overrides.headers ?? {})}, //start with original headers
+                postData: overrides.postData, //send new body only if provided
+                url: overrides.nextUrl ?? request.url(), //change reroute only if nextUrl provided
             });
         });
     };

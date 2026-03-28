@@ -39,7 +39,7 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'], baseURL: uiBaseURL },
-      dependencies: ['setup'],
+      dependencies: ['setup'],      
     },
     {
       name: "api",

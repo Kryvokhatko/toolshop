@@ -4,10 +4,10 @@ import { OrdersPayloadBuilder } from "../testData/builders/ordersPayloadBuilder"
 import { fakeHandToolsPayload } from '../testData/fakeHandToolsPayload';
 import { fakeOrdersPayload } from '../testData/fakeOrdersPayload';
 
-test('Intercept request Admin/Orders to have empty page', async ({ adminPage, adminPageObjects }) => {
+test('Intercept response Admin/Orders to have empty page', async ({ adminPage, adminPageObjects }) => {
     const network = new NetworkHelper(adminPage);
     // Intercept API request on demand and return an empty orders/invoices list.
-    await network.mockJson("https://api.practicesoftwaretesting.com/invoices?page=1", fakeOrdersPayload);
+    await network.mockOrdersResponse("https://api.practicesoftwaretesting.com/invoices?page=1", fakeOrdersPayload);
 
     await adminPageObjects.adminOrdersPage.openOrdersList();
     await adminPageObjects.adminOrdersPage.assertNoOrdersVisible();
@@ -19,8 +19,7 @@ test('Intercept request Admin/Orders to have empty page', async ({ adminPage, ad
     //keep testing
 });
 
-
-test('Intercept request Admin/Orders to have empty page with Data Builder example', async ({ adminPage, adminPageObjects }) => {
+test('Intercept response Admin/Orders to have empty page with Data Builder example', async ({ adminPage, adminPageObjects }) => {
     const network = new NetworkHelper(adminPage);
     const emptyOrdersPayload = new OrdersPayloadBuilder().build();
     //or 1 fake order
@@ -29,7 +28,7 @@ test('Intercept request Admin/Orders to have empty page with Data Builder exampl
     }]).build();
 
     // Intercept API request on demand and return an empty orders/invoices list.
-    await network.mockJson("https://api.practicesoftwaretesting.com/invoices?page=1", emptyOrdersPayload);
+    await network.mockOrdersResponse("https://api.practicesoftwaretesting.com/invoices?page=1", emptyOrdersPayload);
     //await network.mockJson("https://api.practicesoftwaretesting.com/invoices?page=1", oneOrderPayload);//should fail
 
     await adminPageObjects.adminOrdersPage.openOrdersList();
@@ -42,10 +41,10 @@ test('Intercept request Admin/Orders to have empty page with Data Builder exampl
     //keep testing
 });
 
-test('Intercept request category/hand-tools to show only one tool', async ({ customerPage, customerPageObjects }) => {
+test('Intercept response category/hand-tools to show only one tool', async ({ customerPage, customerPageObjects }) => {
     const network = new NetworkHelper(customerPage);
     // Intercept API request on demand and return only one tool with new price.
-    await network.mockJson("https://api.practicesoftwaretesting.com/products?page=1&by_category_slug=hand-tools", fakeHandToolsPayload);
+    await network.mockOrdersResponse("https://api.practicesoftwaretesting.com/products?page=1&by_category_slug=hand-tools", fakeHandToolsPayload);
 
     await customerPageObjects.categoryHandToolsPage.openCategoryHandTools();
     await customerPageObjects.categoryHandToolsPage.assertOnlyOneToolVisible();

@@ -45,7 +45,7 @@ export class AdminOrdersPage extends BasePage {
         await expect(this.page).toHaveURL(/\/admin\/orders(?:[/?#]|$)/);
         await expect(this.page.locator('[data-test="page-title"]')).toContainText('Order');
         // No order rows rendered
-        await expect(this.editButton).toHaveCount(0);        
+        await expect(this.editButton).toHaveCount(0);
     };
 
 };

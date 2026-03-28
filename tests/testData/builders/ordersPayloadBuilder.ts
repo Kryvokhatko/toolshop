@@ -1,4 +1,5 @@
 //Test Data Builder design pattern
+
 type InvoiceListPayload = {
     current_page: number;
     data: Array<Record<string, unknown>>;
