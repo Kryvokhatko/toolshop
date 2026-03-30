@@ -42,7 +42,7 @@ test("GET Retrieve current customer info", async ({ api }) => {
 });
 
 /*
-Test case:
+Test case flow:
 POST /users/register Create new Customer
 GET /users/{id} Retrieve specific Customer info
 PUT /users/{userId} Update specific Customer

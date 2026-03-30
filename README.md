@@ -1,19 +1,26 @@
 # ToolShop Playwright Tests
 
-End-to-end Playwright test suite for the Practice Software Testing Toolshop application https://practicesoftwaretesting.com/
+End-to-end and API Playwright test suite for Practice Software Testing Toolshop: https://practicesoftwaretesting.com/
 
 ## Stack
 
 - Playwright Test
-- TypeScript page objects and fixtures
-- GitHub Actions for CI
+- TypeScript
+- Page Object Model + custom fixtures
+- GitHub Actions CI
 
 ## Project structure
 
-- `lib/pages`: page objects
-- `lib/fixtures`: shared Playwright fixtures for guest, customer, and admin contexts
-- `tests`: test specs and test data
-- `.auth`: generated Playwright storage state files for authenticated sessions
+- lib/fixtures: shared fixtures for UI and API tests
+- lib/pages: page objects and page object manager
+- lib/utils: logger, request handler, network helper, schema validator
+- lib/responseSchemas: API response schemas by endpoint/domain
+- tests/auth.setup.js: setup project that creates auth storage states
+- tests/UI_tests: UI and mixed API+UI scenarios
+- tests/API_tests: API-only scenarios
+- tests/testData: payloads, message data, builders
+- tests/manualTestCases: manual test case docs
+- .auth: generated Playwright storage states (admin/customer)
 
 ## Prerequisites
 
@@ -22,66 +29,85 @@ End-to-end Playwright test suite for the Practice Software Testing Toolshop appl
 
 ## Local setup
 
-1. Install dependencies:
+1. Install dependencies
 
-   ```bash
-   npm ci
-   ```
+    npm ci
 
-2. Create a local env file from the example and populate real credentials:
+2. Create .env in the project root and populate required credentials
 
-   ```bash
-   copy .env.example .env
-   ```
+    UI_URL=https://practicesoftwaretesting.com
+    API_URL=https://api.practicesoftwaretesting.com
+    ADMIN_USERNAME=...
+    ADMIN_PASSWORD=...
+    CUSTOMER_USERNAME=...
+    CUSTOMER_PASSWORD=...
+    GUEST_USERNAME=...
+    GUEST_PASSWORD=...
+    CUSTOMER_FIRST_NAME=Customer
+    CUSTOMER_LAST_NAME=UniqueUser
 
-3. Install Playwright browsers:
+3. Install Playwright browsers
 
-   ```bash
-   npx playwright install
-   ```
+    npx playwright install
 
-4. Generate authenticated storage state for admin and customer users:
+4. Generate authenticated storage states (.auth/admin.json and customer.json)
 
-   ```bash
-   npm run test:setup
-   ```
+    npm run test:setup
 
 ## Run tests
 
-- Full suite: `npm test`
-- UI mode: `npm run test:ui`
-- Headed mode: `npm run test:headed`
-- Login tests only: `npm run test:login`
-- Message flow only: `npm run test:message`
-- API and UI check only: `npm run test:api-ui`
-- Open HTML report: `npm run report`
+General scripts (currently valid):
+- Full suite: npm test
+- Setup project only: npm run test:setup
+- UI mode: npm run test:ui
+- Headed mode: npm run test:headed
+- Debug mode: npm run test:debug
+- Chromium project: npm run test:chromium
+- Open HTML report: npm run report
 
-## Manual registration spec
+Targeted runs (recommended commands aligned with current folder layout):
+- UI tests folder: npx playwright test tests/UI_tests
+- API tests folder: npx playwright test tests/API_tests
+- Login tests: npx playwright test login.spec.ts
+- Message flow: npx playwright test messageFlow.spec.ts
+- API + UI flow: npx playwright test apiandui.spec.ts
+- Registration helper: npx playwright test RegisterUser.spec.ts --headed
 
-`tests/RegisterUser.spec.ts` is a one-off account bootstrap helper and is excluded from the default suite and CI runs.
+## API Schema Files
 
-Run it only when you intentionally want to create a new customer account:
+Response schemas are stored under:
+- lib/responseSchemas/reports
 
-```bash
-set RUN_MANUAL_REGISTER=1
-npm run test:register
-```
+Current schema example:
+- GET_reports_schema.json
 
-## GitHub setup
+Note:
+- schemaValidator currently loads schema JSON files, but does not yet validate response payloads against schema rules.
 
-Before pushing to GitHub:
+## CI (GitHub Actions)
 
-1. Initialize git if this folder is not already a repository.
-2. Keep `.env`, `.auth`, `playwright-report`, and `test-results` out of version control.
-3. Add these repository secrets in GitHub Actions:
-   - `UI_URL`
-   - `ADMIN_USERNAME`
-   - `ADMIN_PASSWORD`
-   - `CUSTOMER_USERNAME`
-   - `CUSTOMER_PASSWORD`
-   - `GUEST_USERNAME`
-   - `GUEST_PASSWORD`
-   - `CUSTOMER_FIRST_NAME`
+Workflow file:
+- playwright.yml
+
+CI runs:
+- npm ci
+- npx playwright install --with-deps
+- npx playwright test
+
+Required GitHub secrets:
+- UI_URL
+- ADMIN_USERNAME
+- ADMIN_PASSWORD
+- CUSTOMER_USERNAME
+- CUSTOMER_PASSWORD
+- GUEST_USERNAME
+- GUEST_PASSWORD
+- CUSTOMER_FIRST_NAME
+- CUSTOMER_LAST_NAME
+
+Optional/Recommended:
+- API_URL (if omitted, project uses default API URL from playwright config)
+
    - `CUSTOMER_LAST_NAME`
 
 ## Notes

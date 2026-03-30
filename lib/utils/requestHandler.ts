@@ -115,10 +115,10 @@ export class RequestHandler {
         return this.executeRequest("PATCH", statusCode, true, this.patchRequest);
     };
 
-    // Template Method: fixed algorithm skeleton
+    // Template Method: fixed algorithm skeleton with same flow for all HTTP verbs
     private async executeRequest(method: HttpMethod, expectedStatusCode: number, includeBody: boolean, calledMethod: Function ) {
         const url = this.createUrl();
-        this.logger.logRequest('PUT', url, this.apiHeaders, this.apiBody);
+        this.logger.logRequest(method, url, this.apiHeaders, this.apiBody);
         const response = await this.sendRequest(method, url, includeBody);
         this.cleanupFields();
         const actualStatus = response.status();
@@ -129,6 +129,7 @@ export class RequestHandler {
         return responseJSON;
     };
 
+    //Behavioral Polymorphism (single method, multiple behaviors based on argument)
     private async sendRequest(method: HttpMethod, url: string, includeBody: boolean): Promise<APIResponse> {
         const options = includeBody ? { headers: this.apiHeaders, data: this.apiBody } : { headers: this.apiHeaders};
         switch (method) {

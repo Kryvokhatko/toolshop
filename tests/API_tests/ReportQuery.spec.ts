@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
 import { test } from '../../lib/fixtures/api.fixtures';
+import { validateSchema } from '../../lib/utils/schemaValidator';
 
 let authToken: string;
 
@@ -49,4 +50,19 @@ test("Get average sales per month", async ({ api }) => {
     //expect(response).toContainEqual({ month: 1, average: 126.14, amount: 4 });
     //expect(response).toContainEqual({ month: 2, average: 44.29, amount: 4 });
     //expect(response).toContainEqual({ month: 3, average: 855.58, amount: 1 });
+});
+
+test("Schema playground", async ({ api }) => {
+    const response = await api
+    .path("/reports/average-sales-per-month")
+    .headers({
+        "Authorization": `bearer ${authToken}`,
+        "Content-Type": "application/json",
+    })
+    .getRequest(200);
+    await validateSchema('reports', 'GET_reports')    
+//GET /reports/average-sales-per-month
+    expect(Array.isArray(response)).toBe(true);
+    expect(response).toHaveLength(12);
+
 });

@@ -9,6 +9,9 @@ export class NetworkHelper extends BasePage {
     // Typed wrapper around Playwright route()
     // Parameters<Page['route']>[0] - take the first parameter type from Page.route() method
     // Parameters<Page['route']>[1] - take the second parameter type from Page.route() which is a function
+    //Parametric Polymorphism - method accepts multiple different types for the same parameter position
+    //async route(url: string | RegExp | ((url: URL) => boolean), fn: (route: Route) => Promise<void>)
+    //Replaced  by
     async route(url: Parameters<Page['route']>[0], fn: Parameters<Page['route']>[1]) {
         await this.page.route(url, fn);
     };
@@ -27,8 +30,9 @@ export class NetworkHelper extends BasePage {
         });
     };
 
-    //Not used it tests, to be done later
+    //Not used in tests, to be done later
     //overrides: {} - optional configuration object parameter
+    //Parametric Polymorphism - method accepts multiple different types for the same parameter position
     async mockOrdersRequest(url: Parameters<Page['route']>[0], overrides: {
         method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
         headers?: Record<string, string>;
