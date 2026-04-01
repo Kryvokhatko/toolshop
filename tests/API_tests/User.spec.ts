@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
 import { test } from '../../lib/fixtures/api.fixtures';
+import { validateSchema } from '../../lib/utils/schemaValidator';
 
 let authToken: string;
 
@@ -14,6 +15,7 @@ test.beforeAll(async ({ api }) => {
     .body(loginData)
     .postRequest(200);
 
+    await validateSchema('users', 'POST_users_login', response);
     expect(response).toHaveProperty('access_token');
     expect(response.token_type).toBe("bearer");
     authToken = response.access_token;
@@ -27,6 +29,7 @@ test("GET Retrieve all users ", async ({ api }) => {
         "Content-Type": "application/json",
     })
     .getRequest(200);
+    await validateSchema('users', 'GET_users', response);
     expect(response).toHaveProperty("current_page");
 });
 
@@ -38,6 +41,7 @@ test("GET Retrieve current customer info", async ({ api }) => {
         "Content-Type": "application/json",
     })
     .getRequest(200);
+    await validateSchema('users', 'GET_users_me', response);
     expect(response).toHaveProperty("first_name");
 });
 

@@ -60,8 +60,8 @@ test("Schema playground", async ({ api }) => {
         "Content-Type": "application/json",
     })
     .getRequest(200);
+
     await validateSchema('reports', 'GET_reports', response);  
     expect(Array.isArray(response)).toBe(true);
     expect(response).toHaveLength(12);
-
 });

@@ -17,15 +17,13 @@ export async function validateSchema(dirName: string, fileName: string, response
             `${JSON.stringify(responseBody, null, 4)}`
         )
     };
-    
-    //console.log(schema);
 };
 
 async function loadSchema(schemaPath: string) {
     try{
-        const schemaContent = await fs.readFile(schemaPath, 'utf-8');
+        const schemaContent = await fs.readFile(schemaPath, 'utf8');
         return JSON.parse(schemaContent);
-    } catch (error) {
+    } catch(error) {
         throw new Error(`Fail to read the schema file: ${error.message}`);
     };
 };
