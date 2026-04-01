@@ -76,6 +76,7 @@ test("PUT Create, modify and delete Customer", async ({ api }) => {
     .body(customerData)
     .postRequest(201);
     const userId = responseRegister.id.toString();
+    await validateSchema('users', 'POST_users_register', responseRegister);
 
 
     //GET /users/{id} Retrieve specific Customer info
@@ -86,6 +87,7 @@ test("PUT Create, modify and delete Customer", async ({ api }) => {
         "Content-Type": "application/json",
     })
     .getRequest(200);
+    await validateSchema('users', 'GET_users_userId', responseCustomerBefore);
     expect(responseCustomerBefore.last_name).toContain("UniqueUser");
 
     //PUT /users/{userId} Update specific Customer
@@ -111,8 +113,8 @@ test("PUT Create, modify and delete Customer", async ({ api }) => {
         "email": "customer@ukr.net"
     })
     .putRequest(200);
+    await validateSchema('users', 'PUT_users_userId', responseUpdate);
     expect(responseUpdate).toHaveProperty("success");
-    //.log(responseUpdate.first_name);
 
     //GET /users/{id} Retrieve specific Customer info
     const responseCustomerAfter = await api

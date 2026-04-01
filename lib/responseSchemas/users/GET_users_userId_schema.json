@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "provider": {},
+    "first_name": {
+      "type": "string"
+    },
+    "last_name": {
+      "type": "string"
+    },
+    "phone": {
+      "type": ["string", "null"]
+    },
+    "dob": {
+      "type": ["string", "null"]
+    },
+    "email": {
+      "type": ["string", "null"]
+    },
+    "totp_enabled": {
+      "type": "boolean"
+    },
+    "created_at": {
+      "type": ["string", "null"]
+    },
+    "address": {
+      "type": "object",
+      "properties": {
+        "street": {
+          "type": ["string", "null"]
+        },
+        "city": {
+          "type": ["string", "null"]
+        },
+        "state": {
+          "type": ["string", "null"]
+        },
+        "country": {
+          "type": ["string", "null"]
+        },
+        "postal_code": {
+          "type": ["string", "null"]
+        }
+      },
+      "required": [
+        "street",
+        "city",
+        "state",
+        "country",
+        "postal_code"
+      ]
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "role": {
+      "type": "string"
+    },
+    "failed_login_attempts": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "id",
+    "provider",
+    "first_name",
+    "last_name",
+    "phone",
+    "dob",
+    "email",
+    "totp_enabled",
+    "created_at",
+    "address",
+    "enabled",
+    "role",
+    "failed_login_attempts"
+  ]
+}
