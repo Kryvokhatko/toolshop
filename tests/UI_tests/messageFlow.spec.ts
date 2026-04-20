@@ -59,7 +59,7 @@ test("Support flow for warranty @E2E", async ({ customerPageObjects, customerPag
     await adminPageObjects.messageDetails.assertMessageId(threadId);
     await adminPageObjects.messageDetails.changeStatus("RESOLVED");
 
-    //Customer can see his message with status "RESOLVED"
+    // Customer can see his message with status "RESOLVED"
     await customerPageObjects.messagesPage.open("account");
     await customerPageObjects.messagesPage.verifyStatus("RESOLVED");
 });

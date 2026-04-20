@@ -50,6 +50,7 @@ export class LoginPage extends BasePage {
                 dateOfBirth: '2000-02-22',
                 street: 'Street 28',
                 postCode: '03088',
+                houseNumber: '29',
                 city: 'Kyiv',
                 state: 'Kyiv',
                 country: 'Ukraine',

@@ -42,7 +42,7 @@ export class OrdersPayloadBuilder {
 
     build(): InvoiceListPayload {
         //...this.payload - creates a new object with all top-level fields copied from this.payload.
-        //data: [...this.payload.data] - replaces data with a new array copy (so returned array is not the same array reference as internal one).
+        //data: [...this.payload.data] - replaces data with a new array copy (so returned array is not the same array reference as internal one)
         return { ...this.payload, data: [...this.payload.data]};
     };    
 };

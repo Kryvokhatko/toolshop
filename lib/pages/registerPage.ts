@@ -7,6 +7,7 @@ export type RegisterData = {
   dateOfBirth: string;
   street: string;
   postCode: string;
+  houseNumber: string;
   city: string;
   state: string;
   country: string;
@@ -22,6 +23,7 @@ export class RegisterPage extends BasePage {
     readonly dateOfBirth: Locator = this.page.getByPlaceholder("YYYY-MM-DD");
     readonly street: Locator = this.page.getByPlaceholder("Your Street *");
     readonly postCode: Locator = this.page.getByPlaceholder("Your Postcode *");
+    readonly houseNumber: Locator = this.page.getByPlaceholder("e.g. 42 *");
     readonly city: Locator = this.page.getByPlaceholder("Your City *");
     readonly state: Locator = this.page.getByPlaceholder("Your State *");
     readonly country: Locator = this.page.locator("#country");
@@ -40,6 +42,7 @@ export class RegisterPage extends BasePage {
         await this.dateOfBirth.fill(data.dateOfBirth);
         await this.street.fill(data.street);
         await this.postCode.fill(data.postCode);
+        await this.houseNumber.fill(data.houseNumber);
         await this.city.fill(data.city);
         await this.state.fill(data.state);
         await this.country.selectOption(data.country);
