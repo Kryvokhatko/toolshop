@@ -6,7 +6,7 @@
     "type": "object",
     "properties": {
       "month": {
-        "type": "string"
+        "type": "number"
       },
       "average": {
         "type": "number"

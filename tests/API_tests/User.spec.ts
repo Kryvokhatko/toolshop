@@ -124,7 +124,5 @@ test("PUT Create, modify and delete Customer", async ({ api }) => {
         "Content-Type": "application/json",
     })
     .getRequest(200);
-    expect(responseCustomerAfter.last_name).toContain("Modified");
-
-    
+    expect(responseCustomerAfter.last_name).toContain("Modified");    
 });

@@ -19,7 +19,7 @@ Thumbs.db
 .vscode/
 
 # Local-only test specs
-tests/apiandui.spec.ts
-tests/login.spec.ts
-tests/test-1.spec.ts
-tests/RegisterUser.spec.ts
+tests/UI_tests/apiandui.spec.ts
+tests/UI_tests/login.spec.ts
+tests/UI_tests/RegisterUser.spec.ts
+tests/API_tests/auth.spec.ts

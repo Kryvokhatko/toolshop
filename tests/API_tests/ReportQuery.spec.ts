@@ -45,11 +45,7 @@ test("Get average sales per month", async ({ api }) => {
         expect(reportMonth.month).toBeLessThanOrEqual(12);
         expect(reportMonth.average).toBeGreaterThanOrEqual(0);
         expect(reportMonth.amount).toBeGreaterThanOrEqual(0);
-    }
-
-    //expect(response).toContainEqual({ month: 1, average: 126.14, amount: 4 });
-    //expect(response).toContainEqual({ month: 2, average: 44.29, amount: 4 });
-    //expect(response).toContainEqual({ month: 3, average: 855.58, amount: 1 });
+    };
 });
 
 test("Schema playground", async ({ api }) => {
