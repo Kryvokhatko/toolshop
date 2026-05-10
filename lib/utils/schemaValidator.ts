@@ -24,6 +24,7 @@ async function loadSchema(schemaPath: string) {
         const schemaContent = await fs.readFile(schemaPath, 'utf8');
         return JSON.parse(schemaContent);
     } catch(error) {
-        throw new Error(`Fail to read the schema file: ${error.message}`);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        throw new Error(`Fail to read the schema file: ${errorMessage}`);
     };
 };

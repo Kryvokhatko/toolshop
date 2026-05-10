@@ -7,6 +7,10 @@ export class CheckoutPage extends BasePage {
     readonly proceedStep1Button: Locator = this.page.locator('[data-test="proceed-1"]');
     readonly proceedStep2Button: Locator = this.page.locator('[data-test="proceed-2"]');
     readonly proceedStep3Button: Locator = this.page.locator('[data-test="proceed-3"]');
+    readonly houseNumber: Locator =  this.page.locator('[data-test="house_number"]');
+    readonly street: Locator =  this.page.locator('[data-test="street"]');
+    readonly city: Locator =  this.page.locator('[data-test="city"]');
+    readonly state: Locator =  this.page.locator('[data-test="state"]');
     readonly loginMessage: Locator = this.page.locator('app-login');
     readonly paymentMethodSelect: Locator = this.page.locator('[data-test="payment-method"]');
     readonly creditCardNumberInput: Locator = this.page.locator('[data-test="credit_card_number"]');
@@ -37,6 +41,13 @@ export class CheckoutPage extends BasePage {
 
         await this.proceedStep2Button.click();
         await expect(this.page.getByRole('heading', { name: 'Billing Address' })).toBeVisible();
+
+        await this.houseNumber.fill('42');
+        await this.street.fill('Erevanska 58');
+        await this.city.fill('Kyiv');
+        await this.city.fill('Kyiv region');
+
+        await expect(this.proceedStep3Button).toBeEnabled();
 
         await this.proceedStep3Button.click();
         await expect(this.page.getByRole('heading', { name: 'Payment' })).toBeVisible();

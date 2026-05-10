@@ -1,4 +1,4 @@
-import { test as base, expect, BrowserContext, Page } from '@playwright/test';
+import { test as base, BrowserContext, Page } from '@playwright/test';
 import path from 'path';
 import fs from 'fs';
 import { ContactPage } from '../pages/contactPage';

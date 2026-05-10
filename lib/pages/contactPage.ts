@@ -44,7 +44,7 @@ export class ContactPage extends BasePage {
         await fileChooser.setFiles(pathToFile);
 
         //gets the uploaded file name from the <input type="file"> element in the browser.
-        const selectedFileName = await fileChooser.element().evaluate((input: any) => input.files?.[0]?.name);
+        const selectedFileName = await fileChooser.element().evaluate((input: HTMLInputElement) => input.files?.[0]?.name);
         /**More details:
         fileChooser.element() → returns the actual file input element handle
         .evaluate((input) => ...) → runs that function in the page context (inside browser)

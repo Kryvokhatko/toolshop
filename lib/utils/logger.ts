@@ -2,15 +2,15 @@
 // Helps to see more details in reports if test fails
 export class APILogger {
 
-    private recentLogs: any[] = [];
+    private recentLogs: Array<{ type: string; data: unknown }> = [];
 
     //body?: any - optional parameter
-    logRequest(method: string, url: string, headers: Record<string, string>, body?: any) {
+    logRequest(method: string, url: string, headers: Record<string, string>, body?: unknown) {
         const logEntry = {method, url, headers, body};
         this.recentLogs.push({ type: 'Request Details', data: logEntry });
     };
 
-    logResponse(statusCode: number, body?: any) {
+    logResponse(statusCode: number, body?: unknown) {
         const logEntry = {statusCode, body};
         this.recentLogs.push({ type: 'Response Details', data: logEntry });
     };

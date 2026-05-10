@@ -1,4 +1,4 @@
-Team Standard (short policy)
+Team Standard (short policy example)
 
 1. Every new API test must include schema validation.
 2. Every changed endpoint must update schema in same PR.

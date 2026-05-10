@@ -8,7 +8,7 @@ export class RequestHandler {
     private request: APIRequestContext;
     private logger: APILogger;
     private defaultApiUrl: string | undefined; //baseUrl
-    private apiUrl: string;
+    private apiUrl?: string;
     private apiPath: string = "";
     private queryParams: object = {};
     private apiHeaders: Record<string, string> = {};
@@ -46,54 +46,6 @@ export class RequestHandler {
         return this;
     };
 
-/* to show the difference for the Design Pattern "Template Method" structure
-
-    async postRequest(statusCode: number) {
-        const url = this.createUrl();
-        this.logger.logRequest('POST', url, this.apiHeaders, this.apiBody);
-        const response = await this.request.post(url, {
-            data: this.apiBody
-        });
-        this.cleanupFields();
-        const actualStatus = response.status();
-        const responseJSON = await response.json();
-        this.logger.logResponse(actualStatus, responseJSON);
-        this.statusCodeValidator(actualStatus, statusCode, this.postRequest);
-        expect(actualStatus).toEqual(statusCode);
-        return responseJSON;
-    };
-
-    async getRequest(statusCode: number) {
-        const url = this.createUrl();
-        this.logger.logRequest('GET', url, this.apiHeaders);
-        const response = await this.request.get(url, {
-            headers: this.apiHeaders
-        });
-        this.cleanupFields();
-        const actualStatus = response.status();
-        const responseJSON = await response.json();
-        this.logger.logResponse(actualStatus, responseJSON);
-        this.statusCodeValidator(actualStatus, statusCode, this.getRequest);
-        expect(actualStatus).toEqual(statusCode);
-        return responseJSON;
-    };
-
-    async putRequest(statusCode: number) {
-        const url = this.createUrl();
-        this.logger.logRequest('PUT', url, this.apiHeaders, this.apiBody);
-        const response = await this.request.put(url, {
-            headers: this.apiHeaders,
-            data: this.apiBody
-        });
-        this.cleanupFields();
-        const actualStatus = response.status();
-        const responseJSON = await response.json();
-        this.logger.logResponse(actualStatus, responseJSON);
-        this.statusCodeValidator(actualStatus, statusCode, this.putRequest);
-        expect(actualStatus).toEqual(statusCode);
-        return responseJSON;
-    };
-*/
     // Public methods are now wrappers around the template method
     async getRequest(statusCode: number) {
         return this.executeRequest("GET", statusCode, false, this.getRequest);
@@ -116,7 +68,7 @@ export class RequestHandler {
     };
 
     // Template Method: fixed algorithm skeleton with same flow for all HTTP verbs
-    private async executeRequest(method: HttpMethod, expectedStatusCode: number, includeBody: boolean, calledMethod: Function ) {
+    private async executeRequest(method: HttpMethod, expectedStatusCode: number, includeBody: boolean, calledMethod: (statusCode: number) => Promise<unknown>) {
         const url = this.createUrl();
         this.logger.logRequest(method, url, this.apiHeaders, this.apiBody);
         const response = await this.sendRequest(method, url, includeBody);
@@ -154,7 +106,7 @@ export class RequestHandler {
         return url.toString();
     };
 
-    private statusCodeValidator(actualStatusCode: number, expectedStatusCode: number, calledMethod: Function) {
+    private statusCodeValidator(actualStatusCode: number, expectedStatusCode: number, calledMethod: (statusCode: number) => Promise<unknown>) {
         if(actualStatusCode !== expectedStatusCode) {
             const logs = this.logger.getRecentLogs();
             const error = new Error(`Expected status code was ${expectedStatusCode} but received ${actualStatusCode}\n\nRecent API activity: \n${logs}`);

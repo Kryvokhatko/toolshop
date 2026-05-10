@@ -5,59 +5,47 @@ import { validateSchema } from '../../lib/utils/schemaValidator';
 let authToken: string;
 
 test.beforeAll(async ({ api }) => {
-    const loginData = {
-        email: process.env.ADMIN_USERNAME,
-        password: process.env.ADMIN_PASSWORD,
-    };
-
     const response = await api
-    .path("/users/login")
-    .body(loginData)
-    .postRequest(200);
+        .path('/users/login')
+        .body({
+            email: process.env.ADMIN_USERNAME,
+            password: process.env.ADMIN_PASSWORD,
+        })
+        .postRequest(200);
 
     expect(response).toHaveProperty('access_token');
-    expect(response.token_type).toBe("bearer");
+    expect(response.token_type).toBe('bearer');
     authToken = response.access_token;
 });
 
-// GET /reports/average-sales-per-month Get average sales per month
-test("Get average sales per month", async ({ api }) => {
-    const response = await api
-    .path("/reports/average-sales-per-month")
-    .headers({
-        "Authorization": `bearer ${authToken}`,
-        "Content-Type": "application/json",
-    })
-    .getRequest(200);
+test.describe('Reports API', { tag: ['@regression', '@api'] }, () => {
+    test('GET average sales per month — structure and schema', async ({ api }) => {
+        const response = await api
+            .path('/reports/average-sales-per-month')
+            .headers({
+                Authorization: `bearer ${authToken}`,
+                'Content-Type': 'application/json',
+            })
+            .getRequest(200);
 
-    expect(Array.isArray(response)).toBe(true);
-    expect(response).toHaveLength(12);
-    expect(response).toEqual(expect.arrayContaining([expect.objectContaining({
-                month: expect.any(Number),
-                average: expect.any(Number),
-                amount: expect.any(Number),
-            }),
-        ])
-    );
+        await validateSchema('reports', 'GET_reports', response);
+        expect(Array.isArray(response)).toBe(true);
+        expect(response).toHaveLength(12);
+        expect(response).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    month: expect.any(Number),
+                    average: expect.any(Number),
+                    amount: expect.any(Number),
+                }),
+            ]),
+        );
 
-    for (const reportMonth of response) {
-        expect(reportMonth.month).toBeGreaterThanOrEqual(1);
-        expect(reportMonth.month).toBeLessThanOrEqual(12);
-        expect(reportMonth.average).toBeGreaterThanOrEqual(0);
-        expect(reportMonth.amount).toBeGreaterThanOrEqual(0);
-    };
-});
-
-test("Schema playground", async ({ api }) => {
-    const response = await api
-    .path("/reports/average-sales-per-month")
-    .headers({
-        "Authorization": `bearer ${authToken}`,
-        "Content-Type": "application/json",
-    })
-    .getRequest(200);
-
-    await validateSchema('reports', 'GET_reports', response);  
-    expect(Array.isArray(response)).toBe(true);
-    expect(response).toHaveLength(12);
+        for (const reportMonth of response) {
+            expect(reportMonth.month).toBeGreaterThanOrEqual(1);
+            expect(reportMonth.month).toBeLessThanOrEqual(12);
+            expect(reportMonth.average).toBeGreaterThanOrEqual(0);
+            expect(reportMonth.amount).toBeGreaterThanOrEqual(0);
+        }
+    });
 });

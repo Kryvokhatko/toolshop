@@ -1,33 +1,37 @@
 import { test } from '../../lib/fixtures/ui.fixtures';
-import { expect } from '@playwright/test';
 
-test('Make an order of Hand Tool as a Customer and complete flow as an Admin', async ({ customerPageObjects, adminPageObjects }) => {
-    // Customer starts from authenticated account page.
-    await customerPageObjects.accountPage.open();
-    await customerPageObjects.accountPage.selectCategory();
-    await customerPageObjects.categoryHandToolsPage.assertCategoryHandToolPageLoaded();
+test.describe('Order Flow', { tag: ['@regression', '@ui'] }, () => {
+    test('Make an order of Hand Tool as a Customer and complete flow as an Admin', async ({
+        customerPageObjects,
+        adminPageObjects,
+    }) => {
+        // Customer starts from authenticated account page.
+        await customerPageObjects.accountPage.open();
+        await customerPageObjects.accountPage.selectCategory();
+        await customerPageObjects.categoryHandToolsPage.assertCategoryHandToolPageLoaded();
 
-    await customerPageObjects.categoryHandToolsPage.openPage3();
-    await customerPageObjects.categoryHandToolsPage.openTapeMeasure5m();
+        await customerPageObjects.categoryHandToolsPage.openPage3();
+        await customerPageObjects.categoryHandToolsPage.openTapeMeasure5m();
 
-    await customerPageObjects.productPage.assertProductOpened();
-    await customerPageObjects.productPage.addToCart();
+        await customerPageObjects.productPage.assertProductOpened();
+        await customerPageObjects.productPage.addToCart();
 
-    await customerPageObjects.checkoutPage.openFromCart();
-    await customerPageObjects.checkoutPage.verifyItemInCart('Tape Measure 5m');
-    await customerPageObjects.checkoutPage.proceedToPaymentStep();
-    await customerPageObjects.checkoutPage.fillCreditCard({
-        cardNumber: '1111-2222-3333-4444',
-        expiration: '12/2029',
-        cvv: '123',
-        cardHolder: 'Customer UniqueUser',
+        await customerPageObjects.checkoutPage.openFromCart();
+        await customerPageObjects.checkoutPage.verifyItemInCart('Tape Measure 5m');
+        await customerPageObjects.checkoutPage.proceedToPaymentStep();
+        await customerPageObjects.checkoutPage.fillCreditCard({
+            cardNumber: '1111-2222-3333-4444',
+            expiration: '12/2029',
+            cvv: '123',
+            cardHolder: 'Customer UniqueUser',
+        });
+        const invoiceNumber = await customerPageObjects.checkoutPage.completePaymentAndCaptureInvoice();
+
+        // Admin validates and completes the same order by captured invoice number.
+        await adminPageObjects.adminOrdersPage.openDashboard();
+        await adminPageObjects.adminOrdersPage.openEditForInvoice(invoiceNumber);
+        await adminPageObjects.adminOrdersPage.updateStatus('COMPLETED');
+        await adminPageObjects.adminOrdersPage.openOrdersList();
+        await adminPageObjects.adminOrdersPage.verifyInvoiceStatus(invoiceNumber, 'COMPLETED');
     });
-    const invoiceNumber = await customerPageObjects.checkoutPage.completePaymentAndCaptureInvoice();
-
-    // Admin validates and completes the same order by captured invoice number.
-    await adminPageObjects.adminOrdersPage.openDashboard();
-    await adminPageObjects.adminOrdersPage.openEditForInvoice(invoiceNumber);
-    await adminPageObjects.adminOrdersPage.updateStatus('COMPLETED');
-    await adminPageObjects.adminOrdersPage.openOrdersList();
-    await adminPageObjects.adminOrdersPage.verifyInvoiceStatus(invoiceNumber, 'COMPLETED');
 });
